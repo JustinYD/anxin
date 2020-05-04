@@ -173,9 +173,9 @@
 				      }, 1000);
 				    },
 				option(item){
-					//sessionStorage.setItem("data", JSON.stringify(item));
 					this.detail=item
 					this.detailflag=true
+					console.log(this.detail)
 				},
 				search(keywords){
 				    return  this.data.filter(item=>{
@@ -206,6 +206,7 @@
 							},
 							async:false,
 							success:function(res){
+								console.log(res)
 								if (res!='fail') {
 									_this.data=[]
 									this.keywords=''

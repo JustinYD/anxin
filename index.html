@@ -32,7 +32,7 @@
 		}
 		.send{
 			box-shadow: #1989fa 0 1px 2px 1px;
-			padding:10px;
+			padding:3px 10px;
 			background: linear-gradient(to right, #00c8c8, #00a2f3);
 			border-radius: 10px;
 			margin:10px 0px;
@@ -40,12 +40,12 @@
 			
 		}
 		.nosend{
-			box-shadow: #eae6dc 0 1px 2px 1px;
-			padding:10px;
-			background: linear-gradient(to right, #28527a, #77067f);
+			box-shadow: lightgrey 0 1px 2px 3px;
+			padding:3px 10px;
+			background: linear-gradient(to right, #ffffff, #ffffff);
 			border-radius: 10px;
 			margin:10px 0px;
-			color: white;
+			color: black;
 		}
 		.send span{
 			
@@ -105,16 +105,16 @@
 	<div id="app" v-cloak>
 		
 		<header class="mui-bar mui-bar-nav" >
-		    <h1 class="mui-title" style="color: #1989FA;font-weight: 500;">安心外卖</h1>
+		    <h1 class="mui-title" style="color: #1989FA;font-weight: 600;">安心外卖</h1>
 			
 		</header>
 		<!-- <div style="position: absolute;">
 			
 		</div> -->
 		<van-tabbar z-index='999' v-model="active">
-		  <van-tabbar-item icon="wap-home" >首页</van-tabbar-item>
-		  <van-tabbar-item icon="add">添加外卖</van-tabbar-item>
-		  <van-tabbar-item icon="manager">个人中心</van-tabbar-item>
+		  <van-tabbar-item icon="wap-home" ></van-tabbar-item>
+		  <van-tabbar-item icon="add"></van-tabbar-item>
+		  <van-tabbar-item icon="manager"></van-tabbar-item>
 		  
 		</van-tabbar>
 		
@@ -140,14 +140,14 @@
 				</div>
 				<div v-if='waimaiData.length>0||waimaiDataNo.length' >
 					<div v-if="waimaiData.length>0">
-					<div class="send" style="text-align: center;margin: 0px;font-size: 15px;">---  配送中{{waimaiData.length}}份  ---</div>
+					<div class="send" style="text-align: center;margin: 0px;font-size: 15px;"><<<  配送中 {{waimaiData.length}} 份  >>></div>
 						<div v-for="item in waimaiData">
 							<transition name="van-slide-left">
 							  <div v-show="active==0">
 								  
 								  <van-swipe-cell>
-								  <van-row >
-								    <van-col span="24"  class="itembox" :class=[item.send?"send":"nosend"]>
+								  <van-row type="flex" justify="center">
+								    <van-col span="22"  class="itembox" :class=[item.send?"send":"nosend"]>
 										<van-row >
 											<van-col span="20" >
 												<span>名字：{{item.name}}</span><br />
@@ -181,7 +181,7 @@
 								      <van-button
 								            text="完成"
 								            style="height: 90%;margin-top: 10px;padding: 5px;border-radius: 10px;"
-											color='linear-gradient(to right, #00007f, #00ffff)'
+											color='linear-gradient(to right, #00007f, #00007f)'
 											square
 											@click='finishitem(item.id)'
 								          />
@@ -199,14 +199,17 @@
 						/>
 					</div>
 					<div v-if="waimaiDataNo.length>0">
-					<div class="nosend" style="text-align: center;margin: 0px;font-size: 15px;">---  待配送{{waimaiDataNo.length}}份  ---</div>
+					<div class="nosend" style="text-align: center;margin: 0px;font-size: 15px; color: #00007F;">
+						
+						<<<  待配送 {{waimaiDataNo.length}} 份  >>>
+						</div>
 					<div v-for="item in waimaiDataNo">
 						<transition name="van-slide-left">
 						  <div v-show="active==0">
 							  
 							  <van-swipe-cell>
-							  <van-row >
-							    <van-col span="24"  class="itembox" :class=[item.send?"send":"nosend"]>
+							  <van-row type="flex" justify="center">
+							    <van-col span="22"  class="itembox" :class=[item.send?"send":"nosend"]>
 									<van-row >
 										<van-col span="20" @click='option(item)'>
 											<span>名字：{{item.name}}</span><br />
@@ -241,7 +244,7 @@
 							            
 							            text="删除"
 							            style="height: 90%;margin-top: 10px;padding: 5px;border-radius: 10px;"
-										color='linear-gradient(to right, #ffffff, #fd0000)'
+										color='linear-gradient(to right, #fd0000, #fd0000)'
 										square
 										@click='deleteitem(item.id)'
 							          />
@@ -305,6 +308,7 @@
 		</div>
 		
 		<div class="mui-content" v-show="active==1">
+			
 			<div v-show='!addflag' >
 				<van-divider :style="{ color: '#55007f', borderColor: '#55007f', padding: '0 16px' }">
 				  添加外卖订单
@@ -337,6 +341,7 @@
 				<van-divider :style="{ color: '#1989fa', borderColor: '#e2e2e2', padding: '0 16px' }">
 				  个人中心
 				</van-divider>
+				
 				<van-row>
 					
 						<van-row style="margin-top: 10%;">
@@ -689,6 +694,7 @@
 				},
 				getitem(){
 					var _this=this
+					
 					$.ajax({
 							type:"post",
 							url:"http://139.9.213.227:4000/takeaway_getitem",
@@ -702,7 +708,6 @@
 									_this.waimaiData=[]
 									_this.waimaiDataNo=[]
 									this.keywords=''
-									
 									for(let i=0;i<res.length;i++){
 										if (res[i][5]==1) {
 											if (res[i][11]==1) {
@@ -855,7 +860,6 @@
 				
 			},
 			updated(){
-				
 				var _this=this
 				var min=_this.min
 				for(let i=0;i<_this.waimaiData.length;i++){
@@ -867,7 +871,6 @@
 							if(sendflag<min){
 								_this.sendMessage(_this.waimaiData[i].id,_this.waimaiData[i].phone,_this.waimaiData[i].name,_this.waimaiData[i].location,i)
 								_this.waimaiData[i].sendactive='2'
-								//_this.sleep(3000)
 							}else{
 								_this.waimaiData[i].sendactive='1'
 							}
@@ -888,6 +891,7 @@
 			
 			
 		})
+		
 		$(function(){ 
 
             adaptHeight();//动态适配高度
